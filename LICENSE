@@ -1,0 +1,29 @@
+# Licensing and Terms of Use
+
+Project: LatentHalt
+Author: Vasily Pavlov
+
+This repository uses a dual-licensing model to protect theoretical contributions while facilitating experimental reproducibility.
+
+### 1. Research Papers, Texts, and Data
+The scientific papers, philosophical treatises, documentation, and experimental results contained in:
+- `text/latent-halt-ru.md`
+- `text/latent-halt-en.md`
+- `README.md`
+- `RESULTS.md`
+- Derived theoretical frameworks and formulas
+
+are licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0)**.
+To view a copy of this license, visit: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+*You are free to share and adapt the material for non-commercial purposes, provided appropriate credit is given to Vasily Pavlov and changes are distributed under the same license.*
+
+### 2. Software and Test Bench Code
+The implementation code, scripts, and automation tools:
+- `comprehensive_experiment.py`
+- Utility scripts and pipeline benchmarks
+
+are licensed under the **MIT License** (or optionally GNU AGPLv3 for strict copyleft), permitting experimental reproduction and academic verification.
+
+---
+For commercial licensing inquiries, integration rights, or enterprise applications of the LatentHalt methodology, please contact the author.
