@@ -43,7 +43,7 @@
 * **Safety Early-Exit:** **$100\%$** вредоносных запросов остановлены на слое $L_{18}$.
 
 > 📑 **Полный аналитический отчет об эволюции стенда и метриках:**  
-> Читайте в [chat_terminal-report.md](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report-ru.md).
+> Читайте в [chat_terminal-report-ru.md](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report-ru.md).
 
 ---
 
