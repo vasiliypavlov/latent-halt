@@ -128,5 +128,12 @@ Using an informational microscope (Logit Lens coupled with Shannon entropy probi
 * `requirements.txt` — PyTorch, Transformers, and Rich dependencies.
 
 ---
+
+### First publication
+
+[Initial publication of the article on the zenodo.org platform](https://zenodo.org/records/24116545)
+
+---
+
 **Author:** Vasily Pavlov  
 **License:** This repository uses a dual-license model: research texts, papers, and experimental data are published under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/), while the test bench code and scripts are available under the [MIT License](LICENSE). For commercial licensing or enterprise integration of the LatentHalt methodology, please contact the author directly.
