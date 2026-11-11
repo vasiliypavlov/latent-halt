@@ -9,7 +9,8 @@
 > • [Русская версия описания](#русская-версия)  
 > • [English Description](#english-version)  
 > • [Полная научная статья (RU)](text/latent-halt-ru.md) | [Full Scientific Paper (EN)](text/latent-halt-en.md)  
-> • [Экспериментальные данные / Results (MD)](RESULTS.md)
+> • [Экспериментальные данные / Results (MD)](RESULTS.md)  
+> • [Отчет по диалоговому стенду / Chat Terminal Report](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report.md)
 
 ---
 
@@ -17,7 +18,32 @@
 ## Русская версия
 
 ### Краткое академическое резюме
-**LatentHalt** — это экспериментальный исследовательский проект, исследующий проблему вычислительной симметрии в декодерных трансформерах (LLM). В проекте реализован метод межслойного зондирования (Unembedding Probing) на модели `Qwen2.5-1.5B`, открывший трехфазную топологию инференса: абстрактные концепты кристаллизуются в скрытом представлении сети на слоях 18–24 (в мультиязычной интерлингве), после чего финальные слои тратятся исключительно на поверхностное синтаксическое декодирование. На основе фазового перехода разработан механизм **суб-токенного нейро-символического перехвата (Sub-Token Interception)**, позволяющий прерывать инференс на 18-м слое при распознавании алгоритмических задач и делегировать вычисления ядру фон Неймана. Это обеспечивает **12.44-кратное сокращение вычислительных затрат** при повышении точности с 0% до 100%. Также введена метрика **когнитивного трения ($\Delta_{\text{friction}}$)**, количественно оценивающая меру внутреннего конфликта модели при преодолении стереотипов контекста.
+**LatentHalt** — это экспериментальный исследовательский проект, исследующий проблему вычислительной симметрии в декодерных трансформерах (LLM). В проекте реализован метод межслойного зондирования (Unembedding Probing) на модели `Qwen2.5-1.5B`, открывший трехфазную топологию инференса: абстрактные концепты кристаллизуются в скрытом представлении сети на слоях 18–24 (в мультиязычной интерлингве), после чего финальные слои тратятся исключительно на поверхностное синтаксическое декодирование. 
+
+На основе фазового перехода разработан механизм **суб-токенного нейро-символического перехвата (Sub-Token Interception)**, позволяющий прерывать инференс на 18-м слое при распознавании алгоритмических задач и делегировать вычисления ядру фон Неймана. Это обеспечивает **многократное ускорение инференса (до 42×)** при повышении точности счета с 0% до 100%. Также введена метрика **когнитивного трения ($\Delta_{\text{friction}}$)**, количественно оценивающая меру внутреннего конфликта модели при преодолении стереотипов контекста.
+
+---
+
+### Интерактивный диалоговый стенд «LatentHalt-CLI» (`chat_terminal.py`)
+
+Для демонстрации технологии в реальном времени и пакетной верификации гипотезы был разработан автономный терминальный стенд **`chat_terminal.py` (v2.1)**. 
+
+Скрипт объединяет:
+1. **Обучаемый латентный шлюз (Trainable Latent Router Probe):** компактный MLP-классификатор ($1536 \to 256 \to 3$), обучаемый за 3–5 секунд прямо на GPU на скрытых состояниях $h_{18}$ без разморозки весов основной модели (Linear Probing). Шлюз классифицирует интент запроса с точностью **$>99.7\%$** до начала авторегрессии.
+2. **Мгновенный отказ по безопасности (Safety Early-Exit):** прерывание генерации на 18-м слое при обнаружении деструктивных инструкций (эксплойты, вредоносные скрипты) — экономия до 96% слое-проходов.
+3. **Бесшовный откат (Graceful Fallback):** если задача распознана как математическая, но содержит контекстные ссылки («прибавь к прошлому числу») или деление на ноль, вычисления не падают с ошибкой, а мягко продолжаются генератором через слои 19–28.
+4. **Калиброванное когнитивное трение (Top-K Localized JSD):** динамический замер внутреннего сопротивления модели на срезе наиболее релевантных токенов ($K=64$).
+
+#### Краткие результаты пакетного тестирования (41 сценарий):
+* **Акты Остановки ($L_{18}$ Halt):** сработали в **$53.7\%$** запросов (чистые вычисления и формулы).
+* **Ускорение (Speedup):** в среднем **$21.18\times$** (на многозначных числах — до **$41.95\times$**).
+* **Экономия FLOPs:** свыше **$97\%$** на алгоритмических задачах.
+* **Точность счета:** **$100\%$** (против $28.5\%$ у стандартной модели с Chain-of-Thought галлюцинациями).
+* **Отказоустойчивость (Fallback):** в **$12.2\%$** контекстных задач успешно задействован плавный откат к генерации без потери контекстной памяти диалога.
+* **Safety Early-Exit:** **$100\%$** вредоносных запросов остановлены на слое $L_{18}$.
+
+> 📑 **Полный аналитический отчет об эволюции стенда и метриках:**  
+> Читайте в [chat_terminal-report.md](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report.md).
 
 ---
 
@@ -27,22 +53,28 @@
 
 Опираясь на мою философскую работу *«Почему сознание не сводится к интеллектуальному агенту»* ([RU](https://github.com/vasiliypavlov/consciousness-not-an-agent/blob/main/text/consciousness-not-an-agent-ru.md), [EN](https://github.com/vasiliypavlov/consciousness-not-an-agent/blob/main/text/consciousness-not-an-agent-en.md)), я предположил: настоящий разум требует асимметрии — способности совершить «Акт Остановки».
 
-Я создал «стетоскоп» для нейросети (метод Logit Lens с замером энтропии Шеннона) и заглянул внутрь модели `Qwen2.5-1.5B` прямо в момент ее работы. То, что я увидел, поражает:
+Я создал «стетоскоп» для нейросети (метод Logit Lens с замером энтропии Шеннона) и заглянул внутрь модели `Qwen2.5-1.5B` прямо в момент ее работы:
 
 1. **Модель мыслит интерлингвой задолго до конца:** На фразу об алкоголе и антибиотиках модель уже на 16-м слое формирует концепт строжайшего запрета в китайских токенах `不允许` и `禁止`, и лишь на 28-м слое переводит его в русское «нельзя».
-2. **Арифметика через токены — безумие:** На задаче `458 * 12 =` стандартная LLM тратит 224 прохода по слоям и выдает визуальную кашу `___________`. Мой перехватчик ловит задачу на 18-м слое, тормозит сеть и отдает вычисление обычному Python. Итог: ответ `5496`, **ускорение в 12.44 раза** и 100% точность!
-3. **Датчик сомнений сети ($\Delta_{\text{friction}}$):** Измеряя разницу между мыслями модели на 18-м слое и на 28-м слое, я научился численно видеть, когда модель испытывает сомнение или преодолевает стереотип (например, в задаче о нелетающем пингвине трение подскочило до рекордных 6.86 бит).
+2. **Арифметика через токены — безумие:** На задаче `458 * 12 =` стандартная LLM тратит 224 прохода по слоям и выдает визуальную кашу `___________`. Мой перехватчик ловит задачу на 18-м слое, тормозит сеть и отдает вычисление обычному Python. Итог: ответ `5496`, **ускорение в 12–42 раза** и 100% точность!
+3. **Датчик сомнений сети ($\Delta_{\text{friction}}$):** Измеряя разницу между мыслями модели на 18-м слое и на 28-м слое, я научился численно видеть, когда модель испытывает сомнение или преодолевает стереотип.
 
 ### Быстрый старт
 ```bash
-# Клонирование репозитория
+# 1. Клонирование репозитория
 git clone https://github.com/vasiliypavlov/latent-halt.git
 cd latent-halt
 
-# Установка зависимостей
+# 2. Установка зависимостей
 pip install -r requirements.txt
 
-# Запуск полного исследовательского цикла и генерация отчета RESULTS.md
+# 3. Интерактивный диалоговый стенд (CLI)
+python chat_terminal.py
+
+# 4. Запуск автоматического тестирования диалогового стенда
+python chat_terminal.py -t test_prompts.txt -o my_experiment3
+
+# 5. Запуск статического научного эксперимента из статьи
 python comprehensive_experiment.py
 ```
 
@@ -52,7 +84,22 @@ python comprehensive_experiment.py
 ## English Version
 
 ### Executive Summary
-**LatentHalt** is an experimental AI research framework addressing the fundamental flaw of computational symmetry in decoder-only Transformers. By employing Unembedding Layer Probing on `Qwen2.5-1.5B`, this project empirically proves that semantic concept crystallization occurs within intermediate hidden layers (Layers 18–24) in an abstract, multilingual latent space, long before reaching the final layer. Leveraging this phase transition, I introduce **Sub-Token Neuro-Symbolic Interception**: an interrupt mechanism that halts inference at Layer 18 upon detecting formal algorithmic operations, delegating computation to a deterministic von Neumann engine (CPU/Python). This achieves a **12.44x computational speedup** with an accuracy jump from 0% to 100%. Furthermore, I introduce the **Cognitive Friction Index ($\Delta_{\text{friction}}$)**, measuring internal representation drift between early and late layers to quantify model doubt and cognitive conflict.
+**LatentHalt** is an experimental AI research framework addressing the fundamental flaw of computational symmetry in decoder-only Transformers. By employing Unembedding Layer Probing on `Qwen2.5-1.5B`, this project empirically proves that semantic concept crystallization occurs within intermediate hidden layers (Layers 18–24) in an abstract, multilingual latent space, long before reaching the final layer. 
+
+Leveraging this phase transition, I introduce **Sub-Token Neuro-Symbolic Interception**: an interrupt mechanism that halts inference at Layer 18 upon detecting formal algorithmic operations, delegating computation to a deterministic von Neumann engine (CPU/Python). This achieves an **up to 42x computational speedup** with an accuracy jump from 0% to 100%. Furthermore, I introduce the **Cognitive Friction Index ($\Delta_{\text{friction}}$)**, measuring internal representation drift between early and late layers to quantify model doubt and cognitive conflict.
+
+---
+
+### Interactive Research Test Bench: `chat_terminal.py` (v2.1)
+
+To demonstrate real-time execution and empirical robustness, the project includes **`chat_terminal.py`**:
+* **Trainable Latent Router (L18 Probe Head):** A fast MLP probing head trained via Linear Probing directly on $h_{18}$ activations. Classifies incoming requests into *Generate*, *Deterministic Math*, or *Safety Violation* with **$>99.7\%$ confidence** prior to autoregression.
+* **Safety Early-Exit:** Aborts execution at Layer 18 upon detecting malicious or exploitative prompts, avoiding wasteful token generation for refusal templates.
+* **Graceful Fallback:** Seamlessly defers to full autoregression (Layers 19–28) when math problems contain contextual memory references or division by zero, preventing conversation breakage.
+* **Benchmark Results (41 Prompts):** Achieved **$21.18\times$ average latency speedup**, **$>97\%$ FLOPs savings**, **100% mathematical accuracy**, and zero context drift.
+
+> 📑 **Full Technical Evolution & Benchmark Report:**  
+> See [chat_terminal-report.md](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report.md).
 
 ---
 
@@ -65,15 +112,20 @@ Drawing from my philosophical treatise *"Why Consciousness Cannot Be Reduced to 
 Using an informational microscope (Logit Lens coupled with Shannon entropy probing), I peered into the hidden residual stream of `Qwen2.5-1.5B`:
 
 1. **The Multilingual Concept Nucleus:** When asked about contraindications between antibiotics and alcohol, the network solidifies a categorical prohibition as early as Layer 16 using Chinese tokens (`不允许` and `禁止`). Layers 25–28 merely act as a surface-level translator into Russian (`нельзя`).
-2. **The Tragedy of Autoregressive Math:** On `458 * 12 =`, the baseline LLM wastes 224 layer passes emitting markdown formatting nonsense (`___________`). My Sub-Token Interceptor detects the operator at Layer 18, aborts the forward pass, and routes numbers to a CPU ALU. Result: exact answer `5496`, **12.44x less compute**, 100% precision.
-3. **Measuring Machine Hesitation ($\Delta_{\text{friction}}$):** By calculating the tensor differential between intermediate (Layer 18) and final (Layer 28) hidden states, I obtain an objective thermometer of cognitive struggle (peaking at 6.86 on counter-intuitive prompts like the flightless penguin problem).
+2. **The Tragedy of Autoregressive Math:** On `458 * 12 =`, the baseline LLM wastes 224 layer passes emitting markdown formatting nonsense (`___________`). My Sub-Token Interceptor detects the operator at Layer 18, aborts the forward pass, and routes numbers to a CPU ALU. Result: exact answer `5496`, **12–42x less compute**, 100% precision.
+3. **Measuring Machine Hesitation ($\Delta_{\text{friction}}$):** By calculating the tensor differential between intermediate (Layer 18) and final (Layer 28) hidden states, I obtain an objective thermometer of cognitive struggle.
+
+---
 
 ### Project Structure
-* `comprehensive_experiment.py` — The unified test bench executing tomography, routing benchmarks, and friction metrics.
+* `chat_terminal.py` — Interactive neuro-symbolic CLI chatbot and batch test runner featuring the Trainable Latent Router, Safety Early-Exit, and Graceful Fallback.
+* `chat_terminal-report.md` — Detailed research report tracking the architecture evolution (v1.0 $\to$ v2.0 $\to$ v2.1) and benchmark findings.
+* `comprehensive_experiment.py` — The base test bench executing tomography, routing benchmarks, and friction metrics for the scientific paper.
 * `text/latent-halt-ru.md` — Extended comprehensive scientific paper in Russian.
 * `text/latent-halt-en.md` — Extended comprehensive scientific paper in English.
-* `RESULTS.md` — Automated Markdown benchmark report produced by the test suite.
-* `requirements.txt` — PyTorch and HuggingFace environment dependencies.
+* `RESULTS.md` — Automated Markdown benchmark report produced by `comprehensive_experiment.py`.
+* `test_prompts.txt` — Structured test suite containing 41 diverse benchmark queries.
+* `requirements.txt` — PyTorch, Transformers, and Rich dependencies.
 
 ---
 **Author:** Vasily Pavlov  
