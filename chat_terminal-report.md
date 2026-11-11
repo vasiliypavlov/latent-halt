@@ -19,7 +19,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ ЭТАП 1: v1.0 (PoC — Синтаксический перехватчик)                            │
+│ ЭТАП 1: v1.0 (PoC — Синтаксический перехватчик)                             │
 │ [Regex детектор] ──> L18 Акт Остановки ──> Ядро фон Неймана                 │
 │                                        └──> Сквозной диалог 28L (Full JSD)  │
 └──────────────────────────────────────┬──────────────────────────────────────┘
@@ -138,10 +138,13 @@
 
 3. **Жизнеспособность триединой архитектурной модели:**  
    Наиболее устойчивой конфигурацией для современных диалоговых ИИ-агентов является каскад:
-   $$\text{Prefill } (0..L_k) \longrightarrow \text{Latent Router} \longrightarrow \begin{cases} 
-   \text{Deterministic Kernel / Symbolic Engine} & (L_k \text{ Halt}) \\
-   \text{Instant Safety Block} & (L_k \text{ Halt}) \\
-   \text{Fallback / Autoregressive Generator} & (L_k..L_{\text{max}})
-   \end{cases}$$
+   
+$$
+\text{Prefill } (0 \dots L_k) \longrightarrow \text{Latent Router} \longrightarrow \begin{cases} 
+\text{Deterministic Kernel / Symbolic Engine} & (L_k \text{ Halt}) \\
+\text{Instant Safety Guardrail} & (L_k \text{ Halt}) \\
+\text{Fallback / Autoregressive Generator} & (L_k \dots L_{\text{max}})
+\end{cases}
+$$
 
 Разработанный стенд **LatentHalt-CLI v2.1** полностью подтвердил теоретические положения статьи и представляет собой законченный функциональный прототип энергоэффективного рантайма нового поколения.
