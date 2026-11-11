@@ -131,7 +131,7 @@ Using an informational microscope (Logit Lens coupled with Shannon entropy probi
 
 ### First publication
 
-[Initial publication of the article on the zenodo.org platform](https://zenodo.org/records/24116545)
+[First publication of the article on the zenodo.org platform](https://zenodo.org/records/24116545)
 
 ---
 
