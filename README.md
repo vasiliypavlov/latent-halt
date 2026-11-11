@@ -99,7 +99,7 @@ To demonstrate real-time execution and empirical robustness, the project include
 * **Benchmark Results (41 Prompts):** Achieved **$21.18\times$ average latency speedup**, **$>97\%$ FLOPs savings**, **100% mathematical accuracy**, and zero context drift.
 
 > 📑 **Full Technical Evolution & Benchmark Report:**  
-> See [chat_terminal-report.md](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report.md).
+> See [chat_terminal-report.md](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report-en.md).
 
 ---
 
