@@ -137,11 +137,15 @@ The **LatentHalt-CLI** project was conceived as an empirical test bench to evalu
    Linear probing demonstrates that by Layer 18, `Qwen2.5-1.5B` has largely completed high-level intent resolution. Latent state vectors $h_{18}$ are linearly separable across classification boundaries with **$99.7\% - 100\%$ accuracy**, delineating conversational dialogue, formal computation, and safety violations. Layers 19–28 primarily perform linguistic formatting, surface-level translation, and syntactic token alignment.
 
 3. **Viability of the Tripartite Architectural Paradigm:**  
-   The optimal framework for next-generation efficient inference engines converges on a tripartite routing cascade:
-   $$\text{Prefill } (0..L_k) \longrightarrow \text{Latent Router} \longrightarrow \begin{cases} 
-   \text{Deterministic Kernel / Symbolic Engine} & (L_k \text{ Halt}) \\
-   \text{Instant Safety Guardrail} & (L_k \text{ Halt}) \\
-   \text{Fallback / Autoregressive Generator} & (L_k..L_{\text{max}})
-   \end{cases}$$
+The optimal framework for next-generation efficient inference engines converges on a tripartite routing cascade:
+
+$$
+\text{Prefill}\,(0 \ldots L_k) \;\longrightarrow\; \text{Latent Router} \;\longrightarrow\;
+\begin{cases}
+\text{Deterministic Kernel / Symbolic Engine} & (L_k\ \text{Halt}) \\[2pt]
+\text{Instant Safety Guardrail} & (L_k\ \text{Halt}) \\[2pt]
+\text{Fallback / Autoregressive Generator} & (L_k \ldots L_{\text{max}})
+\end{cases}
+$$
 
 The **LatentHalt-CLI v2.1** test bench demonstrates that next-generation inference efficiency will not stem from unconstrained parameter scaling, but from dynamic, introspective halting policies embedded directly into the latent stream.
