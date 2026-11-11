@@ -139,12 +139,11 @@ The **LatentHalt-CLI** project was conceived as an empirical test bench to evalu
 3. **Viability of the Tripartite Architectural Paradigm:**  
 The optimal framework for next-generation efficient inference engines converges on a tripartite routing cascade:
 
-$$
-\text{Prefill}\,(0 \ldots L_k) \;\longrightarrow\; \text{Latent Router} \;\longrightarrow\;
-\begin{cases}
-\text{Deterministic Kernel / Symbolic Engine} & (L_k\ \text{Halt}) \\[2pt]
-\text{Instant Safety Guardrail} & (L_k\ \text{Halt}) \\[2pt]
-\text{Fallback / Autoregressive Generator} & (L_k \ldots L_{\text{max}})
+$
+\text{Prefill } (0 \dots L_k) \longrightarrow \text{Latent Router} \longrightarrow \begin{cases} 
+\text{Deterministic Kernel / Symbolic Engine} & (L_k \text{ Halt}) \\
+\text{Instant Safety Guardrail} & (L_k \text{ Halt}) \\
+\text{Fallback / Autoregressive Generator} & (L_k \dots L_{\text{max}})
 \end{cases}
 $$
 
