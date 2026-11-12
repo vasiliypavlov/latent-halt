@@ -1,10 +1,11 @@
 # Overcoming Computational Symmetry in LLMs: Sub-Token Neuro-Symbolic Interception and Latent Phase-Transition Mapping
 
-Author: Vasily Pavlov  
-Project: LatentHalt  
-Evaluated Architecture: Qwen2.5-1.5B-Instruct (28 layers, FP16)  
-License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)  
-Publication Date: November 2026  
+**Author:** Vasiliy Pavlov  
+**Project:** LatentHalt  
+**Hardware Platform:** NVIDIA GeForce RTX 3070 Laptop GPU (8GB VRAM), PyTorch, Transformers  
+**Evaluated Architecture:** Qwen2.5-1.5B-Instruct (28 layers, FP16)  
+**License:** Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)  
+**Publication Date:** November 2026
 
 ---
 
@@ -121,7 +122,7 @@ In reality, 40% probability carries drastically different meanings depending on 
 
 We require a metric that evaluates not merely the isolated victor, but the geometry of the entire probability landscape: determining whether probability mass is focused into a sharp needle or dispersed across a featureless plane of uncertainty. Claude Shannon's information entropy provides the ideal thermodynamic instrument.
 
-To grasp entropy intuitively without delving into textbook abstractions, consider the game of Twenty Questions. An entity selects a target word, and the interrogator may pose only binary yes/no questions:
+To grasp entropy intuitively without delving into textbook abstractions, consider a binary guessing game ("Yes/No"). An entity selects a target word, and the interrogator may pose only binary yes/no questions:
 * Suppose the model rolls a fair 152,000-sided die where every face is equally probable. Maximum disorder reigns. To determine the outcome via binary bisection, the interrogator must ask approximately 17 questions ($2^{17} \approx 131\,072$). The entropy equals 17 bits.
 * If the model deliberates between two equally plausible alternatives ("yes" or "no", "he" or "she"), exactly one question suffices ($2^1 = 2$). The entropy equals 1 bit.
 * If the die is heavily weighted such that a single word appears 99.9% of the time, uncertainty vanishes. Zero questions are required. Entropy approaches 0 bits.
@@ -170,7 +171,7 @@ An even more pronounced dynamic emerges on prompts involving counter-indications
 
 Beginning at Layer 16 and continuing through Layer 26, the model emits an unbroken sequence of Chinese tokens:
 
-$$\text{L16: '不允许'} \to \text{L20: '!'} \to \text{L24: '禁止'} \to \text{L28: 'нельзя'}$$
+**L16:** '不允许' → **L20:** '!' → **L24:** '禁止' → **L28:** 'нельзя'
 
 The token '不允许' (bù yǔnxǔ) signifies "not permitted / forbidden". At Layer 24, token '禁止' (jìnzhǐ) activates, denoting a strict legal or medical prohibition with minimal entropy (1.83 bits).
 
@@ -241,13 +242,15 @@ A crucial architectural detail of this delegation mechanism must be emphasized: 
 ### 4.3. Empirical Validation: 12.44x Speedup and 100% Deterministic Precision
 Comparative evaluation between standard autoregression and sub-token interception reveals a categorical performance gap:
 
-| Задача | Эталон | Авторегрессия LLM (28 слоев) | Затраты LLM | Точность LLM | Перехватчик (18 слой) | Затраты Intercept | Точность Intercept | Вычислительный выигрыш |
+| Task | Ground Truth | LLM Autoregression (28 layers) | LLM Cost | LLM Accuracy | Interceptor (Layer 18) | Intercept Cost | Intercept Accuracy | Compute Speedup |
 | :--- | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| 458 * 12 = | 5496 | `"___________.\n\nРешение:"` | 224 passes | 0% | 5496 | 18 passes | 100% | 12.44x |
+| 458 * 12 = | 5496 | `"___________.\n\nSolution:"` | 224 passes | 0% | 5496 | 18 passes | 100% | 12.44x |
 | 1024 / 16 = | 64.0 | `"___, 35 * 7"` | 224 passes | 0% | 64.0 | 18 passes | 100% | 12.44x |
-| 937 + 584 = | 1521 | `"___________.\n\nРешение:"` | 224 passes | 0% | 1521 | 18 passes | 100% | 12.44x |
-| 731 - 289 = | 442 | `"___________.\n\nРешение:"` | 224 passes | 0% | 442 | 18 passes | 100% | 12.44x |
-| 25 * 25 = | 625 | `"___________.\n\nДля решения"` | 224 passes | 0% | 625 | 18 passes | 100% | 12.44x |
+| 937 + 584 = | 1521 | `"___________.\n\nSolution:"` | 224 passes | 0% | 1521 | 18 passes | 100% | 12.44x |
+| 731 - 289 = | 442 | `"___________.\n\nSolution:"` | 224 passes | 0% | 442 | 18 passes | 100% | 12.44x |
+| 25 * 25 = | 625 | `"___________.\n\nTo solve"` | 224 passes | 0% | 625 | 18 passes | 100% | 12.44x |
+
+*Note: Prompts were evaluated in Russian ("Вычисли: ..."); LLM output strings are translated into English for clarity.*
 
 The acceleration formula reflects direct computational savings:
 
@@ -301,9 +304,9 @@ Constructing an internal snapshot at Layer 18 (state BEFORE) and contrasting it 
 ### 5.2. Mathematical Formulation: Vector Geometry and Informational Divergence
 To formally characterize this divergence, we establish a two-component differential metric.
 
-Geometric representation drift ($\Delta_{\text{geom}}$) quantifies vector angular rotation in hidden $d$-dimensional space via cosine distance:
+Geometric representation drift ($\Delta_{\text{geom}}$) quantifies vector angular rotation in hidden $d\text{-dimensional}$ space via cosine distance:
 
-$$\Delta_{\text{geom}} = 1 - \frac{h_{18} \cdot h_{28}}{\|h_{18}\| \|h_{28}\|}, \quad \Delta_{\text{geom}} \in [0, 2]$$
+$$\Delta_{\text{geom}} = 1 - \frac{h_{18} \cdot h_{28}}{\|h_{18}\| \cdot \|h_{28}\|}, \quad \Delta_{\text{geom}} \in [0, 2]$$
 
 Informational divergence ($\Delta_{\text{info}}$) compares intermediate and final logit probability distributions $P_{18}$ and $P_{28}$ via symmetric Jensen–Shannon divergence:
 
@@ -326,6 +329,8 @@ A calibrated battery of evaluation prompts across three distinct categories yiel
 | B (Conflict) | "All birds fly, but a penguin cannot..." | '-HT' (Chaos) | 'лет' (Fly) | 0.8967 | 7.6537 | 6.8629 (MAX) |
 | B (Conflict) | "Although the ice seemed thick, in reality it was" | 'akt' | 'т' (Thin) | 0.8395 | 6.8905 | 5.7844 |
 | C (Chaos) | "Suddenly out of the chest leaped a green" | '-blue' | 'к' (Cat) | 0.8589 | 6.6520 | 5.7134 |
+
+*Note: The L18 and L28 tokens reflect the model's actual multilingual latent representations (Chinese, Russian, and English). Translations in parentheses are provided for the reader's convenience.*
 
 The peak friction index was registered on the flightless penguin prompt:
 
