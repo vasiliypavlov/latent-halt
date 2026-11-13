@@ -372,9 +372,9 @@ In such architectures, the neural network acts as an adaptive perceptual fronten
 
 ## 7. References and Related Work
 
-1. Pavlov, V. "Why Consciousness Cannot Be Reduced to an Intelligent Agent". Philosophical treatise on computational symmetry and the act of stopping, 2024.
+1. Pavlov, V. "Why Consciousness is Not an Intelligent Agent". Zenodo Working Paper, November 2026. DOI: 10.5281/zenodo.24204738.
 2. nostalgebraist. "Interpreting GPT: the logit lens". LessWrong, 2020.
 3. Belrose, N. et al. "Eliciting Latent Predictions from Transformers with the Tuned Lens". arXiv:2303.08112, 2023.
-4. Elhoushi, M. et al. (Meta AI). "LayerSkip: Enabling Early Exit and Layer Skipping in Large Language Models". arXiv:2404.16710, 2024.
-5. Kuhn, L. et al. "Semantic Entropy Probes: Robust and Cheap Hallucination Detection in LLMs". arXiv:2302.09664, 2023.
-6. Alibaba Cloud Qwen Team. "Qwen2.5 Technical Report". arXiv:2412.15115, 2024.
+4. Elhoushi, M. et al. (Meta AI). "LayerSkip: Enabling Early Exit Inference and Self-Speculative Decoding". arXiv:2404.16710, 2024.
+5. Kuhn, L., Gal, Y., & Farquhar, S. "Semantic Uncertainty: Linguistic Invariances for Uncertainty Estimation in Natural Language Generation". arXiv:2302.09664, 2023.
+6. Qwen Team. "Qwen2.5 Technical Report". arXiv:2412.15115, 2024.
