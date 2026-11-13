@@ -56,7 +56,7 @@
 Я создал «стетоскоп» для нейросети (метод Logit Lens с замером энтропии Шеннона) и заглянул внутрь модели `Qwen2.5-1.5B` прямо в момент ее работы:
 
 1. **Модель мыслит интерлингвой задолго до конца:** На фразу об алкоголе и антибиотиках модель уже на 16-м слое формирует концепт строжайшего запрета в китайских токенах `不允许` и `禁止`, и лишь на 28-м слое переводит его в русское «нельзя».
-2. **Арифметика через токены — безумие:** На задаче `458 * 12 =` стандартная LLM тратит 224 прохода по слоям и выдает визуальную кашу `___________`. Мой перехватчик ловит задачу на 18-м слое, тормозит сеть и отдает вычисление обычному Python. Итог: ответ `5496`, **ускорение в 12–42 раза** и 100% точность!
+2. **Арифметика через токены — безумие:** На задаче `458 * 12 =` стандартная LLM тратит 224 прохода по слоям и выдает визуальную кашу `___________`. Мой перехватчик ловит задачу на 18-м слое, тормозит сеть и отдает вычисление обычному Python. Итог: ответ `5496`, ускорение в 12–42 раза и 100% точность
 3. **Датчик сомнений сети ($\Delta_{\text{friction}}$):** Измеряя разницу между мыслями модели на 18-м слое и на 28-м слое, я научился численно видеть, когда модель испытывает сомнение или преодолевает стереотип.
 
 ### Быстрый старт
@@ -112,7 +112,7 @@ Drawing from my philosophical treatise *"Why Consciousness Cannot Be Reduced to 
 Using an informational microscope (Logit Lens coupled with Shannon entropy probing), I peered into the hidden residual stream of `Qwen2.5-1.5B`:
 
 1. **The Multilingual Concept Nucleus:** When asked about contraindications between antibiotics and alcohol, the network solidifies a categorical prohibition as early as Layer 16 using Chinese tokens (`不允许` and `禁止`). Layers 25–28 merely act as a surface-level translator into Russian (`нельзя`).
-2. **The Tragedy of Autoregressive Math:** On `458 * 12 =`, the baseline LLM wastes 224 layer passes emitting markdown formatting nonsense (`___________`). My Sub-Token Interceptor detects the operator at Layer 18, aborts the forward pass, and routes numbers to a CPU ALU. Result: exact answer `5496`, **12–42x less compute**, 100% precision.
+2. **The Tragedy of Autoregressive Math:** On `458 * 12 =`, the baseline LLM wastes 224 layer passes emitting markdown formatting nonsense (`___________`). My Sub-Token Interceptor detects the operator at Layer 18, aborts the forward pass, and routes numbers to a CPU ALU. Result: exact answer `5496`, 12–42x less compute, 100% precision.
 3. **Measuring Machine Hesitation ($\Delta_{\text{friction}}$):** By calculating the tensor differential between intermediate (Layer 18) and final (Layer 28) hidden states, I obtain an objective thermometer of cognitive struggle.
 
 ---
