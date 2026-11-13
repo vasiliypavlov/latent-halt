@@ -9,8 +9,8 @@
 > • [Русская версия описания](#русская-версия)  
 > • [English Description](#english-version)  
 > • [Полная научная статья (RU)](text/latent-halt-ru.md) | [Full Scientific Paper (EN)](text/latent-halt-en.md)  
-> • [Экспериментальные данные / Results (MD)](my_experiment/RESULTS.md)  
-> • [Отчет по диалоговому стенду](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report-ru.md) / [Chat Terminal Report](https://github.com/vasiliypavlov/latent-halt/blob/main/chat_terminal-report-en.md)
+> • [Экспериментальные данные / Results (MD)](my_experiment/my_experiment3_v2.md)  
+> • [Отчет по диалоговому стенду](chat_terminal-report-ru.md) / [Chat Terminal Report](chat_terminal-report-en.md)
 
 ---
 
